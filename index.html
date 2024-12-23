@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+  <title>oodzfa开服器</title>
+  <style>
+    #outputBox {
+      background-color: black;
+      color: #fff;
+      font-family: monospace;
+      font-size: small;
+      height: calc(100vh - 120px);
+      overflow: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="#"><i class="bi bi-terminal-fill"></i> 控制台</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="settings.html"><i class="bi bi-gear-fill"></i> 设置</a>
+    </li>
+  </ul>
+  <div class="container-fluid mt-1">
+    <div class="btn-group btn-group-sm">
+      <button id="startButton" class="btn btn-success" disabled><i class="bi bi-play-fill"></i> 启动</button>
+      <button id="stopButton" class="btn btn-danger" disabled><i class="bi bi-stop-fill"></i> 关闭</button>
+    </div>
+    <div id="outputBox" class="card mt-1"></div>
+    <div class="input-group input-group-sm mt-1">
+      <input id="inputBox" class="form-control" placeholder="输入命令">
+      <div class="input-group-append">
+        <button class="btn btn-primary" id="execButton"><i class="bi bi-send-fill"></i> 执行</button>
+      </div>
+    </div>
+    <script src="./renderer1.js"></script>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+{
+  "name": "MinecraftServerConsole",
+  "version": "1.0.0",
+  "description": "oodzfa server manager",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/oodzfa/MinecraftServerConsole",
+  "keywords": [
+    "Electron",
+    "oodzfa",
+    "server",
+    "console"
+  ],
+  "author": "oodzfa",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.2.1"
+  },
+  "dependencies": {
+    "bootstrap": "^4.6.2",
+    "bootstrap-icons": "^1.11.3",
+    "child_process": "^1.0.2",
+    "jquery": "^3.7.1"
+  }
+}
