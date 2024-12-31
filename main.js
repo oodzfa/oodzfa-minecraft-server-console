@@ -171,6 +171,7 @@ app.whenReady().then(() => {
     settings.memory = temp.memory || '2048'
     settings.stopCommand = temp.stopCommand || 'stop'
   } catch (e) { }
+  try { exec("OMSCUpdater.exe 1.0.0") } catch (e) { }
 
   createWindow()
 
