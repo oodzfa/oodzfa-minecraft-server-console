@@ -1,10 +1,15 @@
 {
-  "name": "MinecraftServerConsole",
+  "name": "oodzfa-minecraft-server-console",
   "version": "1.0.0",
-  "description": "oodzfa server manager",
+  "description": "oodzfa minecraft server console",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
+  },
+  "build": {
+    "productName": "omsc",
+    "appId": "com.oodzfa.omsc",
+    "copyright": "© 2024-2025 oodzfa"
   },
   "repository": "https://github.com/oodzfa/MinecraftServerConsole",
   "keywords": [

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
+const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = require('electron')
 const path = require('node:path')
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
@@ -22,6 +22,8 @@ function createWindow() {
       contextIsolation: false
     }
   })
+
+  Menu.setApplicationMenu(null);
 
   mainWindow.on('close', function (e) {
     if (runing) {
