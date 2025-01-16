@@ -1,8 +1,11 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = require('electron')
+const https = require('https')
 const path = require('node:path')
 const { spawn, exec } = require('child_process');
 const fs = require('fs');
 const decoder = new TextDecoder('utf-8');
+
+const VERSION = "1.1.0"
 
 var child = null
 var runing = false
@@ -36,11 +39,38 @@ function createWindow() {
         cancelId: 1
       }).then((result) => {
         if (result.response === 0) {
-          try { exec(`taskkill /pid ${child.pid} /T /F`) } catch (e) { }
+          if (process.platform === 'linux' || process.platform === 'darwin') {
+            child.kill()
+          } else if (process.platform === 'win32') {
+            try { exec(`taskkill /pid ${child.pid} /T /F`) } catch (e) { }
+          }
           mainWindow.destroy()
         }
       })
     }
+  })
+
+  https.get('https://oodzfa.github.io/omsc/latest_version.txt', (res) => {
+    res.setEncoding('utf8')
+    res.on('data', (chunk) => {
+      if (!chunk.includes(VERSION)) {
+        dialog.showMessageBox(mainWindow, {
+          type: 'question',
+          buttons: ['确定', '取消'],
+          title: '提示',
+          message: '检测到新版本，是否前往下载？',
+          cancelId: 1
+        }).then((result) => {
+          if (result.response === 0) {
+            shell.openExternal('https://klpbbs.com/thread-152360-1-1.html')
+          }
+        })
+      }
+    })
+
+    res.on('error', (e) => {
+      console.error(`error: ${e}`)
+    })
   })
 
   ipcMain.on('getState', (event) => {
@@ -58,7 +88,7 @@ function createWindow() {
       const options = {
         cwd: path.join(settings.jarPath, '..')
       };
-      child = spawn(settings.javaPath, [`-Xms${settings.memory}M`, `-Xmx${settings.memory}M`, '-jar', settings.jarPath, "--nogui"], options)
+      child = spawn(settings.javaPath, [`-Xms${settings.memory}M`, `-Xmx${settings.memory}M`, '-jar', settings.jarPath, "nogui"], options)
       child.stdout.on('data', (data) => {
         mainWindow.webContents.send('output', decoder.decode(data))
       })
@@ -72,7 +102,11 @@ function createWindow() {
         })
       })
       child.on('error', (error) => {
-        try { exec(`taskkill /pid ${child.pid} /T /F`) } catch (e) { }
+        if (process.platform === 'linux' || process.platform === 'darwin') {
+          child.kill()
+        } else if (process.platform === 'win32') {
+          try { exec(`taskkill /pid ${child.pid} /T /F`) } catch (e) { }
+        }
         runing = false
         mainWindow.webContents.send('state', {
           runing: runing
@@ -142,7 +176,7 @@ function createWindow() {
   ipcMain.on('openServerFolder', async (event, data) => {
     const result = await dialog.showMessageBox(mainWindow, {
       type: 'question',
-      buttons: ['主目录', '插件目录', 'mod目录'],
+      buttons: ['主目录', '插件目录', 'mod目录', '取消'],
       title: '选择',
       message: '你要打开服务器的哪个文件夹？',
       cancelId: 3
@@ -166,6 +200,10 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  if (process.platform !== 'win32' && process.platform !== 'darwin' && process.platform !== 'linux') {
+    app.quit()
+  }
+
   try {
     const temp = JSON.parse(fs.readFileSync(path.join(app.getPath('userData'), 'settings.json'), 'utf-8'))
     settings.javaPath = temp.javaPath || 'java'
@@ -173,7 +211,6 @@ app.whenReady().then(() => {
     settings.memory = temp.memory || '2048'
     settings.stopCommand = temp.stopCommand || 'stop'
   } catch (e) { }
-  try { exec("OMSCUpdater.exe 1.0.0") } catch (e) { }
 
   createWindow()
 
@@ -184,5 +221,5 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', function () {
   fs.writeFileSync(path.join(app.getPath('userData'), 'settings.json'), JSON.stringify(settings))
-  if (process.platform !== 'darwin') app.quit()
+  app.quit()
 })
