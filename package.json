@@ -7,9 +7,36 @@
     "start": "electron ."
   },
   "build": {
-    "productName": "omsc",
-    "appId": "com.oodzfa.omsc",
-    "copyright": "© 2024-2025 oodzfa"
+    "win": {
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
   },
   "repository": "https://github.com/oodzfa/MinecraftServerConsole",
   "keywords": [
@@ -21,7 +48,8 @@
   "author": "oodzfa",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^33.2.1"
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
   },
   "dependencies": {
     "bootstrap": "^4.6.2",
