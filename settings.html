@@ -1,62 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
-
+  <link rel="stylesheet" href="tailwind.css"> 
   <title>oodzfa开服器设置</title>
 </head>
 
-<body>
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link" href="index.html"><i class="bi bi-terminal-fill"></i> 控制台</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="#"><i class="bi bi-gear-fill"></i> 设置</a>
-    </li>
-  </ul>
-  <div class="container-fluid mt-1">
-    <div class="input-group input-group-sm mb-1">
-      <div class="input-group-prepend">
-        <span class="input-group-text" style="width: 74px;">java路径</span>
-      </div>
-      <input id="javaPathBox" class="form-control" placeholder="例如: /usr/bin/java">
-      <div class="input-group-append">
-        <button class="btn btn-primary" id="selectJavaButton"><i class="bi bi-folder-symlink-fill"></i> 选择</button>
+<body class="bg-gray-100 h-screen">
+  <div class="flex h-full">
+    <!-- 左侧导航栏 -->
+    <div class="bg-white border-r border-gray-200 h-full">
+      <div class="flex flex-col p-2 gap-1">
+        <a href="index.html"  class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
+          控制面板
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-600 rounded border-r-2 border-blue-500">
+          设置
+        </a>
       </div>
     </div>
-    <div class="input-group input-group-sm mb-1">
-      <div class="input-group-prepend">
-        <span class="input-group-text" style="width: 74px;">jar路径</span>
+    <!-- 右侧内容区域 -->
+    <div class="flex-1 flex flex-col h-full px-4 py-4">
+      <!-- java路径 -->
+      <div class="flex flex-col gap-1">
+        <label for="javaPathBox" class="text-gray-700 text-sm">java路径:</label>
+        <div class="flex gap-1">
+          <input id="javaPathBox" class="flex-1 px-2 py-1 border border-gray-300 rounded transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <button id="selectJavaButton" class="px-3 py-1 bg-blue-500 text-white rounded transition-colors hover:bg-blue-600 active:bg-blue-700">
+            选择
+          </button>
+        </div>
       </div>
-      <input id="jarPathBox" class="form-control" placeholder="例如: /path/to/server.jar">
-      <div class="input-group-append">
-        <button class="btn btn-primary" id="selectJarButton"><i class="bi bi-folder-symlink-fill"></i> 选择</button>
+      <!-- jar文件路径 -->
+      <div class="flex flex-col gap-1 mt-4">
+        <label for="jarPathBox" class="text-gray-700 text-sm">jar路径:</label>
+        <div class="flex gap-1">
+          <input id="jarPathBox" class="flex-1 px-2 py-1 border border-gray-300 rounded transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
+          <button id="selectJarButton" class="px-3 py-1 bg-blue-500 text-white rounded transition-colors hover:bg-blue-600 active:bg-blue-700">
+            选择
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="input-group input-group-sm mb-1">
-      <div class="input-group-prepend">
-        <span class="input-group-text">内存分配</span>
+      <!-- 内存分配 -->
+      <div class="flex flex-col gap-1 mt-4">
+        <label for="memoryBox" class="text-gray-700 text-sm">内存分配:</label>
+        <input id="memoryBox" class="flex-1 px-2 py-1 border border-gray-300 rounded transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
       </div>
-      <input id="memoryBox" type="number" class="form-control" placeholder="例如: 2048">
-    </div>
-    <div class="input-group input-group-sm mb-1">
-      <div class="input-group-prepend">
-        <span class="input-group-text">关闭命令</span>
+      <!-- 停止命令 -->
+      <div class="flex flex-col gap-1 mt-4">
+        <label for="stopCommandBox" class="text-gray-700 text-sm">关闭命令:</label>
+        <input id="stopCommandBox" class="flex-1 px-2 py-1 border border-gray-300 rounded transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
       </div>
-      <input id="stopCommandBox" class="form-control" placeholder="例如: stop">
-    </div>
-    <div class="mb-1">
-      <button id="saveButton" class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> 应用</button>
-      <button class="btn btn-link" id="openServerFolderButton">打开文件夹</button>
+      <!-- 保存按钮 -->
+      <div class="flex gap-1 mt-4">
+        <button id="saveButton" class="px-3 py-1 bg-green-500 text-white rounded transition-colors hover:bg-green-600 active:bg-green-700">
+          保存
+        </button>
+        <button id="openServerFolderButton" class="px-3 py-1 bg-blue-500 text-white rounded transition-colors hover:bg-blue-600 active:bg-blue-700">
+          浏览目录
+        </button>
+      </div>
+      <!-- js文件 -->
+      <script src="./renderer2.js"></script> 
     </div>
   </div>
-  <script src="./renderer2.js"></script>
 </body>
 
 </html>

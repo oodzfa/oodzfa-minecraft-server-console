@@ -1,11 +1,11 @@
 const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = require('electron')
 const https = require('https')
 const path = require('node:path')
-const { spawn, exec } = require('child_process');
-const fs = require('fs');
-const decoder = new TextDecoder('utf-8');
+const { spawn, exec } = require('child_process')
+const fs = require('fs')
+const decoder = new TextDecoder('utf-8')
 
-const VERSION = "1.1.0"
+const VERSION = '1.2.0'
 
 var child = null
 var runing = false
@@ -26,7 +26,7 @@ function createWindow() {
     }
   })
 
-  Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(null)
 
   mainWindow.on('close', function (e) {
     if (runing) {
@@ -87,8 +87,8 @@ function createWindow() {
       })
       const options = {
         cwd: path.join(settings.jarPath, '..')
-      };
-      child = spawn(settings.javaPath, [`-Xms${settings.memory}M`, `-Xmx${settings.memory}M`, '-jar', settings.jarPath, "nogui"], options)
+      }
+      child = spawn(settings.javaPath, [`-Xms${settings.memory}M`, `-Xmx${settings.memory}M`, '-jar', settings.jarPath, 'nogui'], options)
       child.stdout.on('data', (data) => {
         mainWindow.webContents.send('output', decoder.decode(data))
       })

@@ -1,47 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
-  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="tailwind.css">
   <title>oodzfa开服器</title>
-  <style>
-    #outputBox {
-      background-color: black;
-      color: #fff;
-      font-family: monospace;
-      font-size: small;
-      height: calc(100vh - 120px);
-      overflow: auto;
-    }
-  </style>
 </head>
 
-<body>
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="#"><i class="bi bi-terminal-fill"></i> 控制台</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="settings.html"><i class="bi bi-gear-fill"></i> 设置</a>
-    </li>
-  </ul>
-  <div class="container-fluid mt-1">
-    <div class="btn-group btn-group-sm">
-      <button id="startButton" class="btn btn-success" disabled><i class="bi bi-play-fill"></i> 启动</button>
-      <button id="stopButton" class="btn btn-danger" disabled><i class="bi bi-stop-fill"></i> 关闭</button>
-    </div>
-    <div id="outputBox" class="card mt-1"></div>
-    <div class="input-group input-group-sm mt-1">
-      <input id="inputBox" class="form-control" placeholder="输入命令">
-      <div class="input-group-append">
-        <button class="btn btn-primary" id="execButton"><i class="bi bi-send-fill"></i> 执行</button>
+<body class="bg-gray-100 h-screen">
+  <div class="flex h-full">
+    <!-- 左侧导航栏 -->
+    <div class="bg-white border-r border-gray-200 h-full">
+      <div class="flex flex-col p-2 gap-1">
+        <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-600 rounded border-r-2 border-blue-500">
+          控制面板
+        </a>
+        <a href="settings.html" class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
+          设置
+        </a>
       </div>
     </div>
-    <script src="./renderer1.js"></script>
+    <!-- 右侧内容区域 -->
+    <div class="flex-1 flex flex-col h-full px-4 py-4">
+      <!-- 控制按钮 -->
+      <div class="flex gap-1 mb-1">
+        <button id="startButton" class="px-3 py-1 bg-green-500 text-white rounded transition-colors hover:bg-green-600 active:bg-green-700 disabled:bg-green-500 disabled:opacity-50" disabled>
+          启动
+        </button>
+        <button id="stopButton" class="px-3 py-1 bg-red-500 text-white rounded transition-colors hover:bg-red-600 active:bg-red-700 disabled:bg-red-500 disabled:opacity-50" disabled>
+          关闭
+        </button>
+      </div>
+      <!-- 日志输出 -->
+      <div id="outputBox" class="flex-1 bg-black text-white font-mono text-sm p-2 overflow-auto rounded"></div>
+      <!-- 命令执行框 -->
+      <div class="flex gap-1 mt-1">
+        <input id="inputBox" class="flex-1 px-2 py-1 border border-gray-300 rounded transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        <button id="execButton" class="px-3 py-1 bg-blue-500 text-white rounded transition-colors hover:bg-blue-600 active:bg-blue-700 disabled:bg-blue-500 disabled:opacity-50" disabled>
+          执行
+        </button>
+      </div>
+      <!-- js文件 -->
+      <script src="./renderer1.js"></script>
+    </div>
   </div>
 </body>
 

@@ -1,6 +1,6 @@
 {
   "name": "oodzfa-minecraft-server-console",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "oodzfa minecraft server console",
   "main": "main.js",
   "scripts": {
@@ -52,8 +52,6 @@
     "electron-builder": "^25.1.8"
   },
   "dependencies": {
-    "bootstrap": "^4.6.2",
-    "bootstrap-icons": "^1.11.3",
     "child_process": "^1.0.2",
     "jquery": "^3.7.1"
   }
