@@ -5,7 +5,7 @@ const { spawn, exec } = require('child_process')
 const fs = require('fs')
 const decoder = new TextDecoder('utf-8')
 
-const VERSION = '1.2.0'
+const VERSION = '1.2.1'
 
 var child = null
 var runing = false

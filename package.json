@@ -1,6 +1,6 @@
 {
   "name": "oodzfa-minecraft-server-console",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "oodzfa minecraft server console",
   "main": "main.js",
   "scripts": {
@@ -52,7 +52,9 @@
     "electron-builder": "^25.1.8"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.3",
     "child_process": "^1.0.2",
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "tailwindcss": "^4.0.3"
   }
 }
