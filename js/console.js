@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron')
-window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js')
+window.$ = window.jQuery = require('jquery/dist/jquery.min.js')
 
 ipcRenderer.on('output', function (event, data) {
   $('<div>').addClass('text-gray-300').text(data).appendTo($('#outputBox'))

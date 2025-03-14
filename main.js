@@ -5,7 +5,7 @@ const { spawn, exec } = require('child_process')
 const fs = require('fs')
 const decoder = new TextDecoder('utf-8')
 
-const VERSION = '1.2.1'
+const VERSION = '1.2.2'
 
 var child = null
 var runing = false
@@ -44,6 +44,7 @@ function createWindow() {
           } else if (process.platform === 'win32') {
             try { exec(`taskkill /pid ${child.pid} /T /F`) } catch (e) { }
           }
+          console.log('[app]force stop')
           mainWindow.destroy()
         }
       })
@@ -69,7 +70,7 @@ function createWindow() {
     })
 
     res.on('error', (e) => {
-      console.error(`error: ${e}`)
+      console.error(`[app]error: ${e.message}`)
     })
   })
 
@@ -82,6 +83,7 @@ function createWindow() {
   ipcMain.on('start', (event) => {
     if (!runing) {
       runing = true
+      console.log('[app]start')
       mainWindow.webContents.send('state', {
         runing: runing
       })
@@ -90,13 +92,18 @@ function createWindow() {
       }
       child = spawn(settings.javaPath, [`-Xms${settings.memory}M`, `-Xmx${settings.memory}M`, '-jar', settings.jarPath, 'nogui'], options)
       child.stdout.on('data', (data) => {
-        mainWindow.webContents.send('output', decoder.decode(data))
+        const str = decoder.decode(data)
+        console.log(`[output]${str.trim()}`)
+        mainWindow.webContents.send('output', str)
       })
       child.stderr.on('data', (data) => {
-        mainWindow.webContents.send('output', decoder.decode(data))
+        const str = decoder.decode(data)
+        console.log(`[output]${str.trim()}`)
+        mainWindow.webContents.send('output', str)
       })
       child.on('exit', (code) => {
         runing = false
+        console.log(`[app]exit code: ${code}`)
         mainWindow.webContents.send('state', {
           runing: runing
         })
@@ -108,13 +115,14 @@ function createWindow() {
           try { exec(`taskkill /pid ${child.pid} /T /F`) } catch (e) { }
         }
         runing = false
+        console.error(`[app]error: ${error.message}`)
         mainWindow.webContents.send('state', {
           runing: runing
         })
         dialog.showMessageBox(mainWindow, {
           type: 'error',
           buttons: ['确定'],
-          title: '错误',
+          title: '运行错误',
           message: error.message
         })
       })
@@ -127,7 +135,78 @@ function createWindow() {
 
   ipcMain.on('exec', (event, data) => {
     child.stdin.write(`${data}\n`)
+    console.log(`[input]${data}`)
     mainWindow.webContents.send('output', `> ${data}`)
+  })
+
+  function pluginList() {
+    try {
+      const pluginDir = path.join(settings.jarPath, '..', 'plugins');
+      const files = fs.readdirSync(pluginDir);
+      const plugins = files
+        .filter(file => file.endsWith('.jar'))
+        .map(file => ({ name: file }));
+
+      mainWindow.webContents.send('pluginList', plugins);
+    } catch (e) {
+      mainWindow.webContents.send('pluginList', []);
+    }
+  }
+
+  ipcMain.on('getPluginList', (event, data) => {
+    pluginList()
+  })
+
+  ipcMain.on('deletePlugin', (event, data) => {
+    dialog.showMessageBox(mainWindow, {
+      type: 'question',
+      buttons: ['确定', '取消'],
+      title: '提示',
+      message: `是否要删除插件 ${data}？`,
+      cancelId: 1
+    }).then((result) => {
+      if (result.response === 0) {
+        try {
+          fs.unlinkSync(path.join(settings.jarPath, '..', 'plugins', data));
+          console.log(`[app]deleted plugin: ${data}`);
+          pluginList()
+        } catch (e) {
+          console.error(`[app]error: ${e.message}`);
+          dialog.showMessageBox(mainWindow, {
+            type: 'error',
+            buttons: ['确定'],
+            title: '删除插件错误',
+            message: e.message
+          })
+        }
+      }
+    })
+  })
+
+  ipcMain.on('addPlugin', async (event, data) => {
+    const result = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openFile'],
+      filters: [{
+        name: 'jar',
+        extensions: ['jar']
+      }]
+    })
+    if (result.filePaths[0]) {
+      try {
+        fs.mkdirSync(path.join(settings.jarPath, '..', 'plugins'), { recursive: true })
+        fs.copyFileSync(result.filePaths[0], path.join(settings.jarPath, '..', 'plugins', path.basename(result.filePaths[0])))
+        console.log(`[app]added plugin: ${path.basename(result.filePaths[0])}`)
+        pluginList()
+      } catch (e) {
+        console.error(`[app]error: ${e.message}`)
+        dialog.showMessageBox(mainWindow, {
+          type: 'error',
+          buttons: ['确定'],
+          title: '添加组件错误',
+          message: e.message
+        })
+      }
+    }
   })
 
   ipcMain.handle('getSettings', async (event, data) => {
@@ -139,7 +218,7 @@ function createWindow() {
       dialog.showMessageBox(mainWindow, {
         type: 'error',
         buttons: ['确定'],
-        title: '错误',
+        title: '设置错误',
         message: '请填写所有选项'
       })
       return
@@ -148,7 +227,8 @@ function createWindow() {
     settings.jarPath = data.jarPath
     settings.memory = data.memory
     settings.stopCommand = data.stopCommand
-    mainWindow.loadFile('index.html')
+    console.log(`[app]save settings: ${JSON.stringify(settings)}`)
+    mainWindow.loadFile('./html/console.html')
   })
 
   ipcMain.handle('selectJava', async (event, data) => {
@@ -174,29 +254,10 @@ function createWindow() {
   })
 
   ipcMain.on('openServerFolder', async (event, data) => {
-    const result = await dialog.showMessageBox(mainWindow, {
-      type: 'question',
-      buttons: ['主目录', '插件目录', 'mod目录', '取消'],
-      title: '选择',
-      message: '你要打开服务器的哪个文件夹？',
-      cancelId: 3
-    })
-    switch (result.response) {
-      case 0:
-        shell.openPath(path.join(settings.jarPath, '..'))
-        break
-      case 1:
-        shell.openPath(path.join(settings.jarPath, '..', 'plugins'))
-        break
-      case 2:
-        shell.openPath(path.join(settings.jarPath, '..', 'mods'))
-        break
-      case 3:
-        break
-    }
+    shell.openPath(path.join(settings.jarPath, '..'))
   })
 
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('./html/console.html')
 }
 
 app.whenReady().then(() => {

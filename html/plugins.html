@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html class="h-full">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <link rel="stylesheet" href="../css/tailwind.css"> 
+  <title>oodzfa开服器设置</title>
+</head>
+
+<body class="bg-gray-100 h-screen">
+  <div class="flex h-full">
+    <!-- 左侧导航栏 -->
+    <div class="bg-white border-r border-gray-200 h-full">
+      <div class="flex flex-col p-2 gap-1">
+        <a href="./console.html"  class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
+          控制面板
+        </a>
+        <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-600 rounded border-r-2 border-blue-500">
+          插件管理
+        </a>
+        <a href="./settings.html" class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
+          设置
+        </a>
+      </div>
+    </div>
+    <!-- 右侧内容区域 -->
+    <div class="flex-1 flex flex-col h-full px-4 py-4">
+      <!-- 按钮 -->
+      <div class="flex gap-1 mb-1">
+        <button id="refresh" class="px-3 py-1 bg-blue-500 text-white rounded transition-colors hover:bg-blue-600 active:bg-blue-700">刷新</button>
+        <button id="addPlugin" class="px-3 py-1 bg-green-500 text-white rounded transition-colors hover:bg-green-600 active:bg-green-700">添加</button>
+      </div>
+      <!-- 插件列表 -->
+      <div class="overflow-y-auto">
+        <table class="w-full table-auto">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">插件名称</th>
+              <th class="px-4 py-2">操作</th>
+            </tr>
+          </thead>
+          <tbody id="pluginList" class="[&>tr]:border-b [&>tr]:border-gray-200"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- js文件 -->
+  <script src="../js/plugins.js"></script> 
+</body>
+
+</html>

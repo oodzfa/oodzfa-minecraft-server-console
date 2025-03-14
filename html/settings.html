@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
-  <link rel="stylesheet" href="tailwind.css"> 
+  <link rel="stylesheet" href="../css/tailwind.css"> 
   <title>oodzfa开服器设置</title>
 </head>
 
@@ -14,8 +14,11 @@
     <!-- 左侧导航栏 -->
     <div class="bg-white border-r border-gray-200 h-full">
       <div class="flex flex-col p-2 gap-1">
-        <a href="index.html"  class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
+        <a href="./console.html"  class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
           控制面板
+        </a>
+        <a href="./plugins.html" class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
+          插件管理
         </a>
         <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-600 rounded border-r-2 border-blue-500">
           设置
@@ -66,7 +69,7 @@
     </div>
   </div>
   <!-- js文件 -->
-  <script src="./renderer2.js"></script> 
+  <script src="../js/settings.js"></script> 
 </body>
 
 </html>
