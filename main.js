@@ -141,15 +141,22 @@ function createWindow() {
 
   function pluginList() {
     try {
-      const pluginDir = path.join(settings.jarPath, '..', 'plugins');
-      const files = fs.readdirSync(pluginDir);
-      const plugins = files
-        .filter(file => file.endsWith('.jar'))
-        .map(file => ({ name: file }));
+      const pluginDir = path.join(settings.jarPath, '..', 'plugins')
+      const modDir = path.join(settings.jarPath, '..', 'mods')
+      const pluginFiles = fs.existsSync(pluginDir) ? fs.readdirSync(pluginDir) : []
+      const modFiles = fs.existsSync(modDir) ? fs.readdirSync(modDir) : []
 
-      mainWindow.webContents.send('pluginList', plugins);
+      const plugins = pluginFiles
+        .filter(file => file.endsWith('.jar'))
+        .map(file => ({ name: file, type: 'plugin' }))
+
+      const mods = modFiles
+        .filter(file => file.endsWith('.jar'))
+        .map(file => ({ name: file, type: 'mod' }))
+
+      mainWindow.webContents.send('pluginList', [...plugins, ...mods])
     } catch (e) {
-      mainWindow.webContents.send('pluginList', []);
+      mainWindow.webContents.send('pluginList', [])
     }
   }
 
@@ -157,25 +164,25 @@ function createWindow() {
     pluginList()
   })
 
-  ipcMain.on('deletePlugin', (event, data) => {
+  ipcMain.on('deletePlugin', (event, data, data2) => {
     dialog.showMessageBox(mainWindow, {
       type: 'question',
       buttons: ['确定', '取消'],
       title: '提示',
-      message: `是否要删除插件 ${data}？`,
+      message: `是否要删除这个组件？`,
       cancelId: 1
     }).then((result) => {
       if (result.response === 0) {
         try {
-          fs.unlinkSync(path.join(settings.jarPath, '..', 'plugins', data));
-          console.log(`[app]deleted plugin: ${data}`);
+          fs.unlinkSync(path.join(settings.jarPath, '..', `${data2}s`, data));
+          console.log(`[app]deleted ${data2}: ${data}`);
           pluginList()
         } catch (e) {
           console.error(`[app]error: ${e.message}`);
           dialog.showMessageBox(mainWindow, {
             type: 'error',
             buttons: ['确定'],
-            title: '删除插件错误',
+            title: '删除组件错误',
             message: e.message
           })
         }
@@ -193,9 +200,9 @@ function createWindow() {
     })
     if (result.filePaths[0]) {
       try {
-        fs.mkdirSync(path.join(settings.jarPath, '..', 'plugins'), { recursive: true })
-        fs.copyFileSync(result.filePaths[0], path.join(settings.jarPath, '..', 'plugins', path.basename(result.filePaths[0])))
-        console.log(`[app]added plugin: ${path.basename(result.filePaths[0])}`)
+        fs.mkdirSync(path.join(settings.jarPath, '..', `${data}s`), { recursive: true })
+        fs.copyFileSync(result.filePaths[0], path.join(settings.jarPath, '..', `${data}s`, path.basename(result.filePaths[0])))
+        console.log(`[app]added ${data}: ${path.basename(result.filePaths[0])}`)
         pluginList()
       } catch (e) {
         console.error(`[app]error: ${e.message}`)

@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
   <link rel="stylesheet" href="../css/tailwind.css"> 
-  <title>oodzfa开服器设置</title>
+  <title>oodzfa开服器组件管理</title>
 </head>
 
 <body class="bg-gray-100 h-screen">
@@ -18,7 +18,7 @@
           控制面板
         </a>
         <a href="#" class="flex items-center px-3 py-2 bg-blue-50 text-blue-600 rounded border-r-2 border-blue-500">
-          插件管理
+          组件管理
         </a>
         <a href="./settings.html" class="flex items-center px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 active:bg-gray-200 rounded">
           设置
@@ -30,14 +30,16 @@
       <!-- 按钮 -->
       <div class="flex gap-1 mb-1">
         <button id="refresh" class="px-3 py-1 bg-blue-500 text-white rounded transition-colors hover:bg-blue-600 active:bg-blue-700">刷新</button>
-        <button id="addPlugin" class="px-3 py-1 bg-green-500 text-white rounded transition-colors hover:bg-green-600 active:bg-green-700">添加</button>
+        <button id="addPlugin" class="px-3 py-1 bg-green-500 text-white rounded transition-colors hover:bg-green-600 active:bg-green-700">添加插件</button>
+        <button id="addMod" class="px-3 py-1 bg-green-500 text-white rounded transition-colors hover:bg-green-600 active:bg-green-700">添加mod</button>
       </div>
       <!-- 插件列表 -->
       <div class="overflow-y-auto">
         <table class="w-full table-auto">
           <thead>
             <tr>
-              <th class="px-4 py-2">插件名称</th>
+              <th class="px-4 py-2">名称</th>
+              <th class="px-4 py-2">类型</th>
               <th class="px-4 py-2">操作</th>
             </tr>
           </thead>

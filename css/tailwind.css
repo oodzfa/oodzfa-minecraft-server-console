@@ -193,23 +193,17 @@
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
   }
-  .mb-4 {
-    margin-bottom: calc(var(--spacing) * 4);
-  }
   .flex {
     display: flex;
-  }
-  .table {
-    display: table;
-  }
-  .h-12 {
-    height: calc(var(--spacing) * 12);
   }
   .h-full {
     height: 100%;
   }
   .h-screen {
     height: 100vh;
+  }
+  .w-32 {
+    width: calc(var(--spacing) * 32);
   }
   .w-full {
     width: 100%;
@@ -220,30 +214,14 @@
   .table-auto {
     table-layout: auto;
   }
-  .border-collapse {
-    border-collapse: collapse;
-  }
-  .resize {
-    resize: both;
-  }
   .flex-col {
     flex-direction: column;
   }
   .items-center {
     align-items: center;
   }
-  .justify-between {
-    justify-content: space-between;
-  }
   .gap-1 {
     gap: calc(var(--spacing) * 1);
-  }
-  .space-y-4 {
-    :where(& > :not(:last-child)) {
-      --tw-space-y-reverse: 0;
-      margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
-      margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
-    }
   }
   .overflow-auto {
     overflow: auto;
@@ -342,13 +320,6 @@
   .text-white {
     color: var(--color-white);
   }
-  .underline {
-    text-decoration-line: underline;
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
-  }
   .transition {
     transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, -webkit-backdrop-filter, backdrop-filter;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -444,11 +415,6 @@
       opacity: 50%;
     }
   }
-  .\[\&\>tr\]\:block {
-    &>tr {
-      display: block;
-    }
-  }
   .\[\&\>tr\]\:border-b {
     &>tr {
       border-bottom-style: var(--tw-border-style);
@@ -460,33 +426,8 @@
       border-color: var(--color-gray-200);
     }
   }
-  .\[\&\>tr\]\:py-3 {
-    &>tr {
-      padding-block: calc(var(--spacing) * 3);
-    }
-  }
-  .\[\&\>tr\]\:py-4 {
-    &>tr {
-      padding-block: calc(var(--spacing) * 4);
-    }
-  }
-  .\[\&\>tr\]\:py-6 {
-    &>tr {
-      padding-block: calc(var(--spacing) * 6);
-    }
-  }
-}
-@property --tw-space-y-reverse {
-  syntax: "*";
-  inherits: false;
-  initial-value: 0;
 }
 @property --tw-border-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
-@property --tw-outline-style {
   syntax: "*";
   inherits: false;
   initial-value: solid;
